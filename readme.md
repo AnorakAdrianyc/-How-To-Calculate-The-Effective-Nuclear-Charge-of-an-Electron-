@@ -159,3 +159,5 @@ Using the logic and examples scraped from the video, you can build a lightweight
 </html>
 
 ```
+Demo example:...
+<img width="1791" height="1501" alt="image" src="https://github.com/user-attachments/assets/4f7b8528-8279-4381-be0c-a512ef29d321" />
