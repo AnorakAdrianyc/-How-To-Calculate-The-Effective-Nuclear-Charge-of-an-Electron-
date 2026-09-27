@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effective Nuclear Charge Interactive Guide</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #121212; color: #ffffff; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
+        h1, h3 { color: #4da6ff; }
+        label { font-weight: bold; display: block; margin-top: 15px; }
+        select, input, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 4px; border: none; font-size: 16px; }
+        button { background-color: #4da6ff; color: #000; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        button:hover { background-color: #3388cc; }
+        .result-box { margin-top: 20px; padding: 15px; background-color: #2a2a2a; border-left: 4px solid #4da6ff; display: none; }
+        .math { font-family: monospace; font-size: 18px; color: #ffeb3b; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Calculate Z<sub>eff</sub></h1>
+    <p>Based on <i>The Organic Chemistry Tutor's</i> lesson.</p>
+
+    <label for="preset">Choose a Video Example:</label>
+    <select id="preset" onchange="loadPreset()">
+        <option value="custom">-- Custom Element --</option>
+        <option value="fluorine">Fluorine (F)</option>
+        <option value="aluminum">Aluminum (Al)</option>
+        <option value="chlorine">Chlorine (Cl)</option>
+    </select>
+
+    <label for="protons">Atomic Number (Z) - Total Protons:</label>
+    <input type="number" id="protons" placeholder="e.g., 9">
+
+    <label for="core">Inner Shell Electrons (S):</label>
+    <input type="number" id="core" placeholder="e.g., 2">
+
+    <button onclick="calculateZeff()">Calculate Effective Nuclear Charge</button>
+
+    <div id="result" class="result-box">
+        <h3>Result:</h3>
+        <p>The formula is: <b>Z<sub>eff</sub> = Z - S</b></p>
+        <p class="math" id="math-output"></p>
+        <p id="explanation"></p>
+    </div>
+</div>
+
+<script>
+    const presets = {
+        fluorine: { z: 9, s: 2, name: "Fluorine" },
+        aluminum: { z: 13, s: 10, name: "Aluminum" },
+        chlorine: { z: 17, s: 10, name: "Chlorine" }
+    };
+
+    function loadPreset() {
+        const selection = document.getElementById("preset").value;
+        if (presets[selection]) {
+            document.getElementById("protons").value = presets[selection].z;
+            document.getElementById("core").value = presets[selection].s;
+        } else {
+            document.getElementById("protons").value = "";
+            document.getElementById("core").value = "";
+        }
+    }
+
+    function calculateZeff() {
+        const z = parseInt(document.getElementById("protons").value);
+        const s = parseInt(document.getElementById("core").value);
+        const resultBox = document.getElementById("result");
+        
+        if (isNaN(z) || isNaN(s)) {
+            alert("Please enter valid numbers for Z and S.");
+            return;
+        }
+
+        const zeff = z - s;
+        document.getElementById("math-output").innerText = `Z_eff = ${z} - ${s} = +${zeff}`;
+        
+        let explanation = `The outermost valence electrons experience an effective nuclear pull of <b>+${zeff}</b> because ${s} inner-shell electrons are shielding them from the full +${z} charge of the nucleus.`;
+        
+        if (zeff === z - s && presets[document.getElementById("preset").value]) {
+             explanation += " This perfectly matches the example taught in the video.";
+        }
+
+        document.getElementById("explanation").innerHTML = explanation;
+        resultBox.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
